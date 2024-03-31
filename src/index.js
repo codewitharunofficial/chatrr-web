@@ -7,19 +7,23 @@ import { BrowserRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css';
 import {CurrentChatProvider } from './Contexts/CurrentChatContext';
+import { UserProvider } from './Contexts/UserModelContext';
+import { CurrentConvoProvider } from './Contexts/CurrentConvoContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  
+  <CurrentConvoProvider>
   <CurrentChatProvider>
+    <UserProvider>
 <React.StrictMode>
     <BrowserRouter>
     
     <App />
     </BrowserRouter>
   </React.StrictMode>
+  </UserProvider>
   </CurrentChatProvider>
-
+  </CurrentConvoProvider>
  
   
 );

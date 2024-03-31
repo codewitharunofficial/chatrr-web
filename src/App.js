@@ -1,12 +1,13 @@
-import logo from './logo.svg';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import Header from './Components/Header';
 import Home from './Components/Home';
 import SignInSide from './Components/Login';
 import SignUp from './Components/SignUp';
+import Profile from './Components/Profile';
 
 function App() {
+
   return (
     <>
     <Header />
@@ -14,10 +15,7 @@ function App() {
       <Route path='/' element={<Home />} />
       <Route path='/login' element={<SignInSide />} />
       <Route path='/signup' element={<SignUp />} />
-
-
-
-
+      <Route path='/profile' element={<Profile />} />
     </Routes>
     </>
   );

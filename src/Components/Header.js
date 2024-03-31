@@ -1,13 +1,22 @@
 import React from "react";
+import UserProfile from "./UserProfile";
+import { useUser } from "../Contexts/UserModelContext";
+import { Link } from "react-router-dom";
+import { AccountCircle } from "@mui/icons-material";
+import Menu from "./Menu";
 
 const Header = () => {
+  const [open, setOpen] = useUser();
+  const data = localStorage.getItem("user");
+  const user = JSON.parse(data);
   return (
-    <div style={{position: 'fixed', width: '100%'}} >
+    <div style={{ position: "fixed", width: "100%" }}>
       <nav className="navbar bg-primary">
-        <div className="container-fluid">
-          <a
+        <div className="container-fluid" style={{alignItems: 'center'}} >
+      {/* <Menu /> */}
+          <Link
             className="navbar-brand"
-            href="#"
+            to="/"
             style={{
               display: "flex",
               flexDirection: "row",
@@ -16,6 +25,7 @@ const Header = () => {
               color: "white",
             }}
           >
+            
             <img
               src="./Icon.png"
               alt="Logo"
@@ -25,8 +35,7 @@ const Header = () => {
               className="d-inline-block align-text-top"
             />
             Chatrr
-          </a>
-          <h4 className="text-light">The Chatrr Web App</h4>
+          </Link>
         </div>
       </nav>
     </div>

@@ -57,7 +57,7 @@ export default function SignInSide() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Grid container component="main" sx={{ height: '90vh' }}>
+      <Grid container component="main" sx={{ height: '80vh', position: 'absolute', top: 70,}}>
         <CssBaseline />
         <Grid
           item
@@ -102,6 +102,7 @@ export default function SignInSide() {
                 value={phone}
               />
               <TextField
+              hidden={false}
                 margin="normal"
                 required
                 fullWidth
@@ -114,8 +115,8 @@ export default function SignInSide() {
                 value={password}
               />
               <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
+                control={<Checkbox value={password} color="primary" />}
+                label="Show Password"
               />
               <Button
               onClick={handleSubmit}

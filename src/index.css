@@ -12,3 +12,6 @@ code {
     monospace;
 }
 
+.emoji:hover{
+  color: black;
+}
