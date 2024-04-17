@@ -3,22 +3,24 @@ import React from 'react'
 const UserDetailSection = ({field, value}) => {
   return (
     <div
+    className="user-profile"
           style={{
-            width: "60%",
-            height: 25,
-            border: "1px solid black",
+            minWidth: "60%",
+            width: "auto",
+            height: "auto",
             display: "flex",
-            flexDirection: "row",
+            flexDirection: "column",
             alignItems: "center",
             paddingTop: 10,
-            borderRadius: 10,
-            gap: 10,
+            gap: 20,
             justifyContent: "center",
             alignSelf: 'center',
-            backgroundColor: 'lightgreen',
+            paddingInline: 10,
+            borderBottom: "1px solid gray",
+            ":hover": {backgroundColor: "white"}
           }}
         >
-          <h6>{field}: </h6>
+          <label htmlFor={field} >{field}: </label>
           <h6>{value}</h6>
         </div>
   )

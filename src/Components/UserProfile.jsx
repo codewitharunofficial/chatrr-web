@@ -1,82 +1,80 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Button from '@mui/material/Button';
-import { useUser } from '../Contexts/UserModelContext';
+import * as React from "react";
+import UserDetailSection from "./UserDetailSection";
+import { AccountCircle, CloseSharp } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
+import { useUser } from "../Contexts/UserModelContext";
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  pt: 2,
-  px: 4,
-  pb: 3,
-};
+export default function UserProfile({user}) {
+  const [isProfile, setIsProfile] = useUser(false);
 
-const data = localStorage.getItem("user");
-const user = JSON.parse(data);
-
-function ChildModal() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
+  
   return (
-    <React.Fragment>
-      <Button onClick={handleOpen}>More</Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="child-modal-title"
-        aria-describedby="child-modal-description"
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <div
+        className="profile"
+        style={{
+          width: "100%",
+          height: "100%",
+          backgroundColor: "lightblue",
+          border: "1px solid gray",
+          boxShadow: "4,,-6, 6, -4",
+          borderRadius: 20,
+          padding: 10,
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
+          borderTopRightRadius: 0,
+          borderTopLeftRadius: 0,
+          borderLeft: 'none'
+        }}
       >
-        <Box sx={{ ...style, width: 200 }}>
-          <h2 id="child-modal-title">Text in a child modal</h2>
-          <p id="child-modal-description">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-          </p>
-          <Button onClick={handleClose}>Close Child Modal</Button>
-        </Box>
-      </Modal>
-    </React.Fragment>
-  );
-}
-
-export default function UserProfile() {
-  const [open, setOpen] = useUser();
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  return (
-    <div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="parent-modal-title"
-        aria-describedby="parent-modal-description"
-      >
-        <Box sx={{ ...style, width: 400 }}>
-            <img src={user?.photo?.secure_url} alt="Profile Photo" style={{width: 100, height: 100, borderRadius: 50}} />
-          <h2 id="parent-modal-title">Name: {user?.name}</h2>
-          <p id="parent-modal-description">
-            Email: {user?.email}
-          </p>
-          <ChildModal />
-        </Box>
-      </Modal>
+        <label style={{position: "absolute", top: -18, right: -15}} htmlFor="close">
+        <IconButton sx={{":hover": {backgroundColor: "gray"}}} onClick={() => setIsProfile(!isProfile)} component="span">
+        <CloseSharp fontSize={"18px"} sx={{":hover": {color: 'white'}}} />
+        </IconButton>
+      </label>
+        
+        <h6 className="text-center">{user?.name}</h6>
+        <div
+          style={{
+            width: "100%",
+            height: 100,
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {user?.profilePhoto ? (
+            <img
+              src={user?.profilePhoto?.secure_url}
+              alt={user?.name}
+              style={{
+                width: 100,
+                height: 100,
+                borderRadius: 50,
+                border: "1px solid gray",
+              }}
+            />
+          ) : (
+            <AccountCircle style={{ fontSize: 100, color: "lightgray" }} />
+          )}
+        </div>
+        <UserDetailSection field={"Phone"} value={user?.phone} />
+        <UserDetailSection field={"Email"} value={user?.email} />
+        <UserDetailSection
+          field={"Bio"}
+          value={user?.bio ? user?.bio : "I'm A Chatrr 😎"}
+        />
+      </div>
     </div>
   );
 }

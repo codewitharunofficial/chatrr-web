@@ -5,6 +5,7 @@ import Home from './Components/Home';
 import SignInSide from './Components/Login';
 import SignUp from './Components/SignUp';
 import Profile from './Components/Profile';
+import UserProfile from './Components/UserProfile';
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
       <Route path='/login' element={<SignInSide />} />
       <Route path='/signup' element={<SignUp />} />
       <Route path='/profile' element={<Profile />} />
+      <Route path='/:name/:id' element={<UserProfile />} />
     </Routes>
     </>
   );

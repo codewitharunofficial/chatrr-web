@@ -37,7 +37,7 @@ function Profile() {
     >
       <div
         style={{
-          width: "40%",
+          width: "70%",
           height: "70%",
           backgroundColor: "lightblue",
           border: "2px solid gray",

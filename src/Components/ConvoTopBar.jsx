@@ -3,10 +3,13 @@ import moment from "moment";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useCurrentChat } from "../Contexts/CurrentChatContext";
+import { useUser } from "../Contexts/UserModelContext";
 
-const ConvoTopBar = ({ profilePic, name, lastseen }) => {
+const ConvoTopBar = ({ profilePic, name, lastseen, user }) => {
   const navigation = useNavigate();
   const [currentChat, setCurrentChat] = useCurrentChat();
+  const [isProfile, setIsProfile] = useUser(false);
+
 
   return (
     <div
@@ -66,8 +69,8 @@ const ConvoTopBar = ({ profilePic, name, lastseen }) => {
       </div>
       <Info
         style={{ cursor: "pointer" }}
-        onClick={() => navigation("/profile")}
-        sx={{ ":hover": { color: "white" } }}
+        onClick={() => setIsProfile(true)}
+        sx={{ ":hover": { color: "white", textAnchor: "middle" } }}
       />
     </div>
   );

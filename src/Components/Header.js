@@ -3,7 +3,6 @@ import UserProfile from "./UserProfile";
 import { useUser } from "../Contexts/UserModelContext";
 import { Link } from "react-router-dom";
 import { AccountCircle } from "@mui/icons-material";
-import Menu from "./Menu";
 
 const Header = () => {
   const [open, setOpen] = useUser();

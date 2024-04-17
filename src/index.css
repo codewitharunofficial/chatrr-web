@@ -15,3 +15,33 @@ code {
 .emoji:hover{
   color: black;
 }
+
+.user-profile:hover{
+  background-color: aliceblue;
+}
+
+div.hide{
+  display: none;
+  transform: translateX(-100%);
+  transition: 2s;
+}
+
+div.show {
+  display: flex;
+  transform: translateX(0);
+}
+
+@media (max-width: 768px) {
+  .wrapper{
+    display: flex;
+    flex-direction: column;
+  }
+  .chat-grid{
+    display: flex
+  }
+  .profile{
+  width: 90%;
+  background-color: aqua;
+}
+
+}

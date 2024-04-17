@@ -30,9 +30,9 @@ export default function ChatsCard({name, lastMessage, lastMessageAt, profilePic,
   }
 
   return (
-    <Card className='Chat'
+      <Card className='Chat'
     onClick={() => getMessages(chat, participantsIds, id)}
-    sx={{ ":hover": { backgroundColor: "lightgreen" } }} style={{display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer',}} >
+    sx={{ ":hover": { backgroundColor: "lightgreen" } }} style={{display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', paddingInline: 10}} >
          <CardMedia
         component="img"
         image={profilePic}
@@ -41,7 +41,7 @@ export default function ChatsCard({name, lastMessage, lastMessageAt, profilePic,
       />
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <CardContent sx={{ flex: '1 0 auto' }}>
-          <Typography component="div" variant="h5">
+          <Typography component="div" variant="h7">
             {name}
           </Typography>
           <Typography variant="subtitle1" color="text.secondary" component="div">

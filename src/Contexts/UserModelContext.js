@@ -3,10 +3,10 @@ import { createContext, useContext, useState } from "react";
 const UserModelContext = createContext();
 
 const UserProvider = ({ children }) => {
-  const [open, setOpen] = useState(false);
+  const [isProfile, setIsProfile] = useState(false);
 
   return (
-    <UserModelContext.Provider value={[open, setOpen]}>
+    <UserModelContext.Provider value={[isProfile, setIsProfile]}>
       {children}
     </UserModelContext.Provider>
   );
