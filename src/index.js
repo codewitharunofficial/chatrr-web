@@ -9,9 +9,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import {CurrentChatProvider } from './Contexts/CurrentChatContext';
 import { UserProvider } from './Contexts/UserModelContext';
 import { CurrentConvoProvider } from './Contexts/CurrentConvoContext';
+import { ChatMessageProvider } from './Contexts/ShowChatMessages';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <ChatMessageProvider>
   <CurrentConvoProvider>
   <CurrentChatProvider>
     <UserProvider>
@@ -24,7 +26,7 @@ root.render(
   </UserProvider>
   </CurrentChatProvider>
   </CurrentConvoProvider>
- 
+  </ChatMessageProvider>
   
 );
 

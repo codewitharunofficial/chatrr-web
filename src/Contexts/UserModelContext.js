@@ -4,9 +4,9 @@ const UserModelContext = createContext();
 
 const UserProvider = ({ children }) => {
   const [isProfile, setIsProfile] = useState(false);
-
+  const [showMyProfile, setShowMyProfile] = useState(false);
   return (
-    <UserModelContext.Provider value={[isProfile, setIsProfile]}>
+    <UserModelContext.Provider value={[isProfile, setIsProfile, showMyProfile, setShowMyProfile]}>
       {children}
     </UserModelContext.Provider>
   );

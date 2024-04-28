@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import Loader from './Loader';
 
 function Copyright(props) {
   return (
@@ -36,10 +37,12 @@ export default function SignInSide() {
 
     const [phone, setPhone] = React.useState("");
     const [password, setPassword] = React.useState("");
+    const [requested, setRequested] = React.useState(false);
     const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setRequested(true);
    try {
     const {data} = await axios.post('https://android-chattr-app.onrender.com/api/v1/users/login', {phone, password});
     console.log(data);
@@ -48,15 +51,22 @@ export default function SignInSide() {
         toast(`Welcome ${data?.user?.name}`);
         localStorage.setItem("token", JSON.stringify(data?.token));
         navigate('/');
+        setRequested(false)
     }
 
    } catch (error) {
     console.log(error)
+    setRequested(false);
    }
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <>
+    {
+      requested ? (
+        <Loader />
+      ) : (
+        <ThemeProvider theme={defaultTheme}>
       <Grid container component="main" sx={{ height: '80vh', position: 'absolute', top: 70,}}>
         <CssBaseline />
         <Grid
@@ -146,5 +156,8 @@ export default function SignInSide() {
         </Grid>
       </Grid>
     </ThemeProvider>
+      )
+    }
+    </>
   );
 }

@@ -1,11 +1,11 @@
 import React from "react";
 
-const Messages = ({message}) => {
+const Messages = ({message, key}) => {
   const data = localStorage.getItem("user");
   const user = JSON.parse(data);
   return (
     <p
-      key={message?._id}
+      key={key}
       style={{
         backgroundColor: user?._id === message?.sender ? "gray" : "purple",
         alignSelf: user?._id === message?.sender ? "flex-end" : "flex-start",

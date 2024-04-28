@@ -8,22 +8,26 @@ import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { useCurrentChat } from '../Contexts/CurrentChatContext';
 import { useCurrentConvo } from '../Contexts/CurrentConvoContext';
+import { useChat } from '../Contexts/ShowChatMessages';
 
-export default function ChatsCard({name, lastMessage, lastMessageAt, profilePic, participantsIds, participants, id, chat }) {
+export default function ChatsCard({name, lastMessage, lastMessageAt, profilePic, participantsIds, participants, id, chat, key }) {
   const theme = useTheme();
 
   const [currentChat, setCurrentChat] = useCurrentChat();
   const [currentConvo, setCurrentConvo] = useCurrentConvo();
-  // const [convoId, setConvoId] = useCurrentConvo();
+  const [ShowChatMessages, setShowChatMessages] = useChat();
 
 
   const getMessages = async (chat, participantsIds, id) => {
-    // setConvoId(id);
+    setCurrentChat([]);
+    setShowChatMessages(true);
      try {
         const {data} = await axios.post(`https://android-chattr-app.onrender.com/api/v1/messages/fetch-messages`, {sender: participantsIds[0], reciever: participantsIds[1]});
         console.log(data);
         setCurrentChat(data?.messages);
         setCurrentConvo(chat);
+    setShowChatMessages(false);
+
      } catch (error) {
         console.log(error);
      }
@@ -31,8 +35,9 @@ export default function ChatsCard({name, lastMessage, lastMessageAt, profilePic,
 
   return (
       <Card className='Chat'
+      key={key}
     onClick={() => getMessages(chat, participantsIds, id)}
-    sx={{ ":hover": { backgroundColor: "lightgreen" } }} style={{display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', paddingInline: 10}} >
+    sx={{ ":hover": { backgroundColor: "lightgreen", translate: "1%" } }} style={{display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', paddingInline: 10}} >
          <CardMedia
         component="img"
         image={profilePic}

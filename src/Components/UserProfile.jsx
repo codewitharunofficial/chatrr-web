@@ -1,13 +1,12 @@
 import * as React from "react";
 import UserDetailSection from "./UserDetailSection";
 import { AccountCircle, CloseSharp } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { useUser } from "../Contexts/UserModelContext";
 
-export default function UserProfile({user}) {
+export default function UserProfile({ user }) {
   const [isProfile, setIsProfile] = useUser(false);
 
-  
   return (
     <div
       style={{
@@ -33,24 +32,54 @@ export default function UserProfile({user}) {
           gap: 10,
           borderTopRightRadius: 0,
           borderTopLeftRadius: 0,
-          borderLeft: 'none'
+          borderLeft: "none",
         }}
       >
-        <label style={{position: "absolute", top: -18, right: -15}} htmlFor="close">
-        <IconButton sx={{":hover": {backgroundColor: "gray"}}} onClick={() => setIsProfile(!isProfile)} component="span">
-        <CloseSharp fontSize={"18px"} sx={{":hover": {color: 'white'}}} />
-        </IconButton>
-      </label>
-        
-        <h6 className="text-center">{user?.name}</h6>
+        <Box
+          component={"div"}
+          sx={{
+            height: 40,
+            backgroundColor: "slategrey",
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            alignContent: "center",
+            paddingInline: 2,
+            ":hover": { translateY: 1, backgroundColor: "purple" },
+          }}
+        >
+          <IconButton
+            sx={{
+              ":hover": { backgroundColor: "lightgreen" },
+              flex: 0.05,
+              alignSelf: "flex-start",
+            }}
+            onClick={() => setIsProfile(!isProfile)}
+            component="span"
+          >
+            <CloseSharp
+              fontSize={"18px"}
+              sx={{ ":hover": { color: "" }, color: "white" }}
+            />
+          </IconButton>
+          <h6
+            style={{ flex: 0.8, verticalAlign: "center" }}
+            className="text-center text-white"
+          >
+            Profile
+          </h6>
+        </Box>
         <div
           style={{
             width: "100%",
             height: 100,
             display: "flex",
-            flexDirection: "row",
+            flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
+            gap: 10,
+            marginTop: 30,
           }}
         >
           {user?.profilePhoto ? (
@@ -67,13 +96,22 @@ export default function UserProfile({user}) {
           ) : (
             <AccountCircle style={{ fontSize: 100, color: "lightgray" }} />
           )}
+          <h5
+            style={{
+              textDecoration: "underline",
+              paddingInline: 10,
+              color: "teal",
+            }}
+          >
+            {user?.name}
+          </h5>
         </div>
-        <UserDetailSection field={"Phone"} value={user?.phone} />
-        <UserDetailSection field={"Email"} value={user?.email} />
         <UserDetailSection
           field={"Bio"}
           value={user?.bio ? user?.bio : "I'm A Chatrr 😎"}
         />
+        <UserDetailSection field={"Phone"} value={user?.phone} />
+        <UserDetailSection field={"Email"} value={user?.email} />
       </div>
     </div>
   );

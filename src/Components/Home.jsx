@@ -23,6 +23,11 @@ import HomeWhileLoading from "./HomeWhileLoading";
 import { useUser } from "../Contexts/UserModelContext";
 import { motion } from "framer-motion";
 import Messages from "./Messages";
+import Profile from "./Profile";
+import { Drawer, IconButton } from "@mui/material";
+import MyProfileDrawer from "./MyProfileDrawer";
+import { useChat } from "../Contexts/ShowChatMessages";
+import Loader from "./Loader";
 
 const defaultTheme = createTheme();
 
@@ -36,9 +41,13 @@ export default function Home() {
   const navigation = useNavigate();
   const [isNewMsg, setIsNewMsg] = React.useState(false);
   const [isProfile] = useUser(false);
+  const [showMyProfile, setShowMyProfile] = React.useState(false);
+  const [showChatMesssages] = useChat();
+  const [deviceWidth, setDeviceWidth] = React.useState(window.innerWidth);
 
   const data = localStorage.getItem("user");
   const user = JSON.parse(data);
+  
 
   React.useEffect(() => {
     if (!user) {
@@ -50,8 +59,11 @@ export default function Home() {
         setReceiver(currentConvo?.receiver);
       }
     }
+    
     //eslint-disable-next-line
   }, [currentConvo]);
+
+  console.log(receiver);
 
   const getChats = async () => {
     try {
@@ -65,11 +77,19 @@ export default function Home() {
   };
 
   React.useEffect(() => {
+    if(!user){
+         navigation('/login')
+    }
     socketServcies.initializeSocket();
     socketServcies.emit("connected", user?._id);
+    // socketServcies.emit("disconnect", user?._id);
     getChats();
     //eslint-disable-next-line
   }, [user?.id, isNewMsg]);
+
+  React.useEffect(() => {
+    setDeviceWidth(window.innerWidth)
+  }, [window.innerWidth])
 
   const queries = {
     sender: user?._id,
@@ -108,7 +128,7 @@ export default function Home() {
           <div
             className="wrapper"
             style={{
-              maxHeight: "100vh",
+              maxHeight: `${deviceWidth > 768 ? "100vh"  : "auto"}`,
               width: "100%",
               display: "flex",
               flexDirection: "row",
@@ -116,11 +136,13 @@ export default function Home() {
             }}
           >
             <CssBaseline />
-            <div className="chat-grid col-md-3 col-sm-12 w-sm-100">
+            <div style={{display: `${showChatMesssages === true && deviceWidth <= 768 ? "none" : "grid"}`}}
+              className={`d-${showChatMesssages === true && deviceWidth <= 768 ? "none" : deviceWidth < 768 ? "grid col-12" : "grid col-md-3"}`}
+            >
               <div
                 className="chathead"
                 style={{
-                  display: "flex",
+                  display: `flex`,
                   flexDirection: "row",
                   alignItems: "flex-end",
                   width: "100%",
@@ -130,57 +152,86 @@ export default function Home() {
                   gap: 20,
                 }}
               >
-                <WebStoriesOutlined />
-                <AccountCircle />
+                <IconButton
+                  sx={{
+                    ":hover": { backgroundColor: "gray" },
+                    alignSelf: "center",
+                  }}
+                  onClick={() => setShowMyProfile(!showMyProfile)}
+                  component="span"
+                >
+                  <WebStoriesOutlined />
+                </IconButton>
+                <IconButton
+                  sx={{
+                    ":hover": { backgroundColor: "gray" },
+                    alignSelf: "center",
+                    ":focus": {backgroundColor: "gray"}
+                  }}
+                  onClick={() => setShowMyProfile(!showMyProfile)}
+                  component="span"
+                >
+                  <AccountCircle />
+                </IconButton>
               </div>
-              <Box
-                className="col-md-12 display-sm-none"
-                style={{ height: "70vh", marginTop: 10 }}
-              >
-                {chats.length > 0 &&
-                  chats.map((chat) => (
-                    <ChatsCard
-                      id={chat?._id}
-                      chat={chat}
-                      participants={[chat?.sender, chat?.receiver]}
-                      participantsIds={[chat?.senderId, chat?.receiverId]}
-                      key={chat._id}
-                      name={
-                        user?._id === chat?.senderId
-                          ? chat?.receiver?.name
-                          : chat?.sender?.name
-                      }
-                      lastMessage={
-                        chat?.chat[chat?.chat.length - 1]?.message?.message
-                          ? chat?.chat[
-                              chat.chat.length - 1
-                            ]?.message?.message.slice(0, 40)
-                          : user?._id ===
-                              chat?.chat[chat?.chat.length - 1]?.sender &&
-                            chat?.chat[chat?.chat.length - 1]?.message?.asset_id
-                          ? "You Sent An Attachment"
-                          : user?._id ===
-                              chat?.chat[chat?.chat.length - 1]?.reciever &&
-                            chat?.chat[chat?.chat.length - 1]?.message?.asset_id
-                          ? `${chat?.sender?.name} Sent you An Attachment`
-                          : null
-                      }
-                      profilePic={
-                        user?._id === chat?.senderId
-                          ? chat?.receiver?.profilePhoto?.secure_url
-                          : chat?.sender?.profilePhoto?.secure_url
-                      }
-                      lastMessageAt={chat?.updatedAt}
-                    />
-                  ))}
-              </Box>
+              {showMyProfile ? (
+                <Profile />
+              ) : (
+                <Box
+                  className={`d-${
+                    showChatMesssages === true && window.innerWidth <= "768"
+                      ? "none"
+                      : "col-md-12"
+                  }`}
+                  style={{ height: "70vh", marginTop: 0 }}
+                >
+                  {chats.length > 0 &&
+                    chats.map((chat) => (
+                      <ChatsCard
+                        id={chat?._id}
+                        chat={chat}
+                        participants={[chat?.sender, chat?.receiver]}
+                        participantsIds={[chat?.senderId, chat?.receiverId]}
+                        key={chat._id}
+                        name={
+                          user?._id === chat?.senderId
+                            ? chat?.receiver?.name
+                            : chat?.sender?.name
+                        }
+                        lastMessage={
+                          chat?.chat[chat?.chat.length - 1]?.message?.message
+                            ? chat?.chat[
+                                chat.chat.length - 1
+                              ]?.message?.message.slice(0, 40)
+                            : user?._id ===
+                                chat?.chat[chat?.chat.length - 1]?.sender &&
+                              chat?.chat[chat?.chat.length - 1]?.message
+                                ?.asset_id
+                            ? "You Sent An Attachment"
+                            : user?._id ===
+                                chat?.chat[chat?.chat.length - 1]?.reciever &&
+                              chat?.chat[chat?.chat.length - 1]?.message
+                                ?.asset_id
+                            ? `${chat?.sender?.name} Sent you An Attachment`
+                            : null
+                        }
+                        profilePic={
+                          user?._id === chat?.senderId
+                            ? chat?.receiver?.profilePhoto?.secure_url
+                            : chat?.sender?.profilePhoto?.secure_url
+                        }
+                        lastMessageAt={chat?.updatedAt}
+                      />
+                    ))}
+                </Box>
+              )}
             </div>
-            {/* <BasicMenu /> */}
-            <motion.div
-              // initial={{ opacity: 0, x: -100 }}
-              final={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className={isProfile ? "col-md-5" : "col-md-9 mr-0"}
+            <div
+              className={`d-${
+                deviceWidth <= 768 ? "grid col-12" :
+                 deviceWidth <= 768 && showChatMesssages ? `none`
+                  : `grid ${isProfile ? "col-md-5" : "col-md-9 mr-0 ml-0"}`
+              }`}
               style={{
                 borderLeft: "0.5px solid gray",
                 borderRight: "0.5px solid gray",
@@ -200,16 +251,18 @@ export default function Home() {
                   // paddingRight: "3em",
                 }}
               >
-                <ConvoTopBar
-                  profilePic={receiver?.profilePhoto?.secure_url}
-                  lastseen={
-                    receiver?.isOnline === "true"
-                      ? "Online"
-                      : moment(receiver?.lastseen).fromNow()
-                  }
-                  name={receiver?.name}
-                  user={receiver}
-                />
+                {currentChat?.length > 0 && (
+                  <ConvoTopBar
+                    profilePic={receiver?.profilePhoto?.secure_url}
+                    lastseen={
+                      receiver?.Is_Online === "true"
+                        ? "Online"
+                        : moment(receiver?.lastseen).fromNow()
+                    }
+                    name={receiver?.name}
+                    user={receiver}
+                  />
+                )}
                 <div
                   style={{
                     width: "100%",
@@ -221,34 +274,43 @@ export default function Home() {
                     paddingInline: 10,
                   }}
                 >
-                  {currentChat?.length > 0 ? (
-                    currentChat?.map((message) =>
-                      message?.type === "Text" ? (
-                        <Messages key={message?._id} message={message} />
+                  {
+                    showChatMesssages && currentChat?.length < 1 ? (
+                           <Loader />
+                    ) : (
+                      currentChat?.length > 0 ? (
+                        currentChat?.map((message) =>
+                          message?.type === "Text" ? (
+                            <Messages key={message?._id} message={message} />
+                          ) : (
+                            <p
+                            key={message?._id}
+                              style={{
+                                backgroundColor:
+                                  user?._id === message?.sender ? "gray" : "purple",
+                                alignSelf:
+                                  user?._id === message?.sender
+                                    ? "flex-end"
+                                    : "flex-start",
+                                maxWidth: "40%",
+                                padding: 10,
+                                borderRadius: 10,
+                              }}
+                            >
+                              This is an Attachment
+                            </p>
+                          )
+                        )
                       ) : (
                         <p
-                          style={{
-                            backgroundColor:
-                              user?._id === message?.sender ? "gray" : "purple",
-                            alignSelf:
-                              user?._id === message?.sender
-                                ? "flex-end"
-                                : "flex-start",
-                            maxWidth: "40%",
-                            padding: 10,
-                            borderRadius: 10,
-                          }}
+                          style={{ alignSelf: "center", justifyContent: "center" }}
                         >
-                          This is an Attachment
+                          Tap On A Conversation from the Coversations List on the
+                          left To See Messages Here
                         </p>
                       )
                     )
-                  ) : (
-                    <p style={{ alignSelf: "center" }}>
-                      Tap On A Conversation from the Coversations List on the
-                      left To See Messages Here
-                    </p>
-                  )}
+                  }
                   {openEmojis && (
                     <EmojiPicker
                       style={{ position: "absolute", bottom: 60 }}
@@ -261,67 +323,69 @@ export default function Home() {
                 </div>
               </Box>
 
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  width: "100%",
-                  background: "rgba(255, 255, 255, 0.9)",
-                  justifyContent: "center",
-                  marginTop: -5,
-                }}
-              >
+              {currentChat?.length > 0 && (
                 <Box
                   sx={{
-                    width: "90%",
                     display: "flex",
-                    flexDirection: "row",
                     alignItems: "center",
-                    background: "rgba(255, 255, 255, 1)",
-                    border: "1px solid gray",
-                    borderRadius: 30,
-                    gap: 2,
-                    paddingX: 3,
+                    width: "100%",
+                    background: "rgba(255, 255, 255, 0.9)",
+                    justifyContent: "center",
+                    marginTop: -5,
                   }}
                 >
-                  <InsertEmoticonRounded
-                    sx={{ ":hover": { color: "black" } }}
-                    onClick={() => setOpenEmojis(!openEmojis)}
-                    className="emoji"
-                    style={{ fontSize: 30, cursor: "pointer" }}
-                  />
-                  <AttachFileOutlined
-                    sx={{ ":hover": { color: "black" } }}
-                    style={{ fontSize: 30, cursor: "pointer" }}
-                  />
-                  <input
-                    required
-                    id="message"
-                    placeholder="Type Your Message Here..."
-                    name="message"
-                    aria-multiline={true}
-                    style={{
-                      padding: 10,
-                      border: "none",
-                      alignSelf: "center",
-                      flex: 1,
-                      outline: "none",
+                  <Box
+                    sx={{
+                      width: "90%",
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      background: "rgba(255, 255, 255, 1)",
+                      border: "1px solid gray",
+                      borderRadius: 30,
+                      gap: 2,
+                      paddingX: 3,
                     }}
-                    onChange={(e) => setText(e.target.value)}
-                    value={text}
-                  />
+                  >
+                    <InsertEmoticonRounded
+                      sx={{ ":hover": { color: "black" } }}
+                      onClick={() => setOpenEmojis(!openEmojis)}
+                      className="emoji"
+                      style={{ fontSize: 30, cursor: "pointer" }}
+                    />
+                    <AttachFileOutlined
+                      sx={{ ":hover": { color: "black" } }}
+                      style={{ fontSize: 30, cursor: "pointer" }}
+                    />
+                    <input
+                      required
+                      id="message"
+                      placeholder="Type Your Message Here..."
+                      name="message"
+                      aria-multiline={true}
+                      style={{
+                        padding: 10,
+                        border: "none",
+                        alignSelf: "center",
+                        flex: 1,
+                        outline: "none",
+                      }}
+                      onChange={(e) => setText(e.target.value)}
+                      value={text}
+                    />
 
-                  <SendIcon
-                    onClick={() => {
-                      sendMessage();
-                      setText("");
-                    }}
-                    style={{ cursor: "pointer", alignSelf: "center" }}
-                    sx={{ ":hover": { color: "green" } }}
-                  />
+                    <SendIcon
+                      onClick={() => {
+                        sendMessage();
+                        setText("");
+                      }}
+                      style={{ cursor: "pointer", alignSelf: "center" }}
+                      sx={{ ":hover": { color: "green" } }}
+                    />
+                  </Box>
                 </Box>
-              </Box>
-            </motion.div>
+              )}
+            </div>
 
             <motion.div
               className={`${isProfile ? "show col-md-4 mr-0" : "hide"}`}
