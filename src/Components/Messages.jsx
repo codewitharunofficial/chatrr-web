@@ -7,11 +7,12 @@ const Messages = ({message, key}) => {
     <p
       key={key}
       style={{
-        backgroundColor: user?._id === message?.sender ? "gray" : "purple",
+        backgroundColor: user?._id === message?.sender ? "gray" : "lightskyblue",
         alignSelf: user?._id === message?.sender ? "flex-end" : "flex-start",
-        maxWidth: "40%",
+        maxWidth: "80%",
         padding: 10,
         borderRadius: 10,
+        color: "white"
       }}
     >
       {message?.message?.message}

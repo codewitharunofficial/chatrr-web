@@ -7,10 +7,18 @@ import SignInSide from './Components/Login';
 import SignUp from './Components/SignUp';
 import Profile from './Components/Profile';
 import UserProfile from './Components/UserProfile';
+import HomeForMob from './Components/For Small Devices/HomeForMob';
+import Navbar from './Components/For Small Devices/Navbar';
+import { useCurrentChat } from './Contexts/CurrentChatContext';
 
 function App() {
 
   const [deviceWidth, setDeviceWidth] = React.useState(window.innerWidth);
+  const [currentChat, setCurrentChat] = useCurrentChat();
+
+  React.useEffect(() => {
+    setDeviceWidth(window.innerWidth)
+  }, [window.innerWidth]);
 
   return (
     // <>
@@ -40,12 +48,15 @@ function App() {
     <> 
     <Header />
     <Routes>
-      <Route path='/' element={<Home />} />
+      <Route path='/' element={deviceWidth > 768 ? <Home /> : <HomeForMob />} />
       <Route path='/login' element={<SignInSide />} />
       <Route path='/signup' element={<SignUp />} />
       <Route path='/profile' element={<Profile />} />
       <Route path='/:name/:id' element={<UserProfile />} />
     </Routes>
+    {
+      deviceWidth <= 768 && currentChat?.length === 0 && (<Navbar />)
+    }
     </>
   );
 }

@@ -1,4 +1,5 @@
 import {
+  ArrowBack,
   Phone,
   VideoCallOutlined,
   VideoChat,
@@ -9,7 +10,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useCurrentChat } from "../Contexts/CurrentChatContext";
 import { useUser } from "../Contexts/UserModelContext";
-import { IconButton, Popover } from "@mui/material";
+import { Backdrop, IconButton, Popover } from "@mui/material";
 
 const ConvoTopBar = ({ profilePic, name, lastseen, user }) => {
   const navigation = useNavigate();
@@ -45,6 +46,9 @@ const ConvoTopBar = ({ profilePic, name, lastseen, user }) => {
         padding: 10,
       }}
     >
+      <IconButton onClick={() => setCurrentChat([])} sx={{":hover": {backgroundColor: 'white'}}} >
+      <ArrowBack />
+      </IconButton>
       <img
         src={profilePic}
         alt={name}

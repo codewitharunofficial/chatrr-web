@@ -2,6 +2,7 @@ import {
   AccountCircle,
   CameraAltRounded,
   Edit,
+  ExitToApp,
   Save,
 } from "@mui/icons-material";
 import { Alert } from "bootstrap";
@@ -12,7 +13,7 @@ import UserEditField from "./UserEditField";
 import { Fab, IconButton } from "@mui/material";
 import { userFields } from "../Constants/Fields";
 
-function Profile() {
+function Profile({setIsProfile}) {
   const data = localStorage.getItem("user");
   const user = JSON.parse(data);
 
@@ -26,6 +27,13 @@ function Profile() {
       navigator("/login");
     }
   });
+
+  const logOut = () => {
+     alert("You're Getting Logged Out");
+     localStorage.removeItem("user");
+     navigator("/login");
+     setIsProfile(false);
+  };
 
   const handleFileChange = (e) => {
     console.log(e);
@@ -79,8 +87,8 @@ function Profile() {
         <label
           style={{
             position: "absolute",
-            top: 185,
-            left: "16%",
+            top: window.innerWidth > 768 ? 185 : 140,
+            left: window.innerWidth > 768 ? "16%" : "55%",
           }}
           htmlFor="fileInput"
         >
@@ -95,7 +103,7 @@ function Profile() {
       <div
         style={{
           width: "100%",
-          height: "45vh",
+          height: window.innerWidth > 768 ? "45vh" : "100%",
           backgroundColor: "lightgreen",
           padding: 10,
           display: "flex",
@@ -121,20 +129,38 @@ function Profile() {
               />
             ))}
         {isEditing ? (
-          <Fab onClick={() => setIsEditing(!isEditing)}
-          style={{alignSelf: "center"}}
+          <Fab
+            onClick={() => setIsEditing(!isEditing)}
+            style={{ alignSelf: "center" }}
             // sx={{ ":hover": { backgroundColor: "green" } }}
             color="success"
           >
             <Save />
           </Fab>
         ) : (
-           <Fab onClick={() => setIsEditing(!isEditing)}
-            style={{alignSelf: "center"}}
-            color="primary"
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: 10,
+              alignSelf: "center",
+            }}
           >
-            <Edit />
-          </Fab>
+            <Fab
+              onClick={() => setIsEditing(!isEditing)}
+              style={{ alignSelf: "center" }}
+              color="primary"
+            >
+              <Edit />
+            </Fab>
+            <Fab
+              onClick={() => logOut()}
+              style={{ alignSelf: "center" }}
+              color="danger"
+            >
+              <ExitToApp />
+            </Fab>
+          </div>
         )}
       </div>
     </div>

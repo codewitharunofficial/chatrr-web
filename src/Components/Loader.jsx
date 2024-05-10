@@ -4,7 +4,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 import { useCurrentChat } from '../Contexts/CurrentChatContext';
 
-export default function Loader() {
+export default function Loader({message}) {
   
   const [currentChat] = useCurrentChat();
 
@@ -15,7 +15,7 @@ export default function Loader() {
         open={currentChat?.length < 1 ? true : false}
       >
         <CircularProgress color="inherit" />
-        <h6 style={{color: 'white', alignSelf: 'center'}} >Loading Messages...</h6>
+        <h6 style={{color: 'white', alignSelf: 'center'}} >{message ? message : "Laoding..."}</h6>
       </Backdrop>
     </div>
   );

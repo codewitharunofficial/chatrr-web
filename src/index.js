@@ -10,9 +10,11 @@ import {CurrentChatProvider } from './Contexts/CurrentChatContext';
 import { UserProvider } from './Contexts/UserModelContext';
 import { CurrentConvoProvider } from './Contexts/CurrentConvoContext';
 import { ChatMessageProvider } from './Contexts/ShowChatMessages';
+import { SearchProvider } from './Contexts/SearchContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <SearchProvider>
   <ChatMessageProvider>
   <CurrentConvoProvider>
   <CurrentChatProvider>
@@ -27,6 +29,7 @@ root.render(
   </CurrentChatProvider>
   </CurrentConvoProvider>
   </ChatMessageProvider>
+  </SearchProvider>
   
 );
 
