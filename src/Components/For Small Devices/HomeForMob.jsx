@@ -9,9 +9,9 @@ import { useChat } from "../../Contexts/ShowChatMessages";
 import Coversations from "./Coversations";
 import { useCurrentChat } from "../../Contexts/CurrentChatContext";
 import Loader from "../Loader";
-import HomeWhileLoading from '../HomeWhileLoading';
+import HomeWhileLoading from "../HomeWhileLoading";
 
-const HomeForMob = () => {
+const HomeForMob = ({ focusHome }) => {
   const [currentConvo] = useCurrentConvo();
   const [receiver, setReceiver] = React.useState();
   const [isNewMsg, setIsNewMsg] = React.useState(false);
@@ -29,7 +29,7 @@ const HomeForMob = () => {
       navigation("/login");
     }
     socketServcies.initializeSocket();
-    socketServcies.emit("connected", user?._id);
+     socketServcies.emit("connected", user?._id);
     const fetchChats = async () => {
       const chats = await getChats(user?._id);
       if (chats) {
@@ -57,9 +57,11 @@ const HomeForMob = () => {
 
   return (
     <div style={{ width: "100%", height: "100%", position: "fixed", top: 80 }}>
-      { chats?.length < 1 ? (
+      {chats?.length < 1 ? (
         <HomeWhileLoading />
-      ) : showChatMessages ? (<Loader message={"Loading Messages..."} />) : currentChat?.length > 0 ? (
+      ) : showChatMessages ? (
+        <Loader message={"Loading Messages..."} />
+      ) : currentChat?.length > 0 ? (
         <Coversations
           showChatMessages={showChatMessages}
           receiver={receiver}
@@ -72,14 +74,15 @@ const HomeForMob = () => {
               width: "100%",
               height: "5%",
               padding: 7,
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-evenly',
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-evenly",
               marginTop: 5,
             }}
           >
             <span
+              className="focus-bg-success"
               style={{
                 width: "auto",
                 border: "1px solid gray",

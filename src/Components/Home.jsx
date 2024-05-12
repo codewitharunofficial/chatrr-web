@@ -36,7 +36,7 @@ export default function Home() {
   const [text, setText] = React.useState("");
   const navigation = useNavigate();
   const [isNewMsg, setIsNewMsg] = React.useState(false);
-  const [isProfile] = useUser(false);
+  const [isProfile, setIsProfile] = useUser();
   const [showMyProfile, setShowMyProfile] = React.useState(false);
   const data = localStorage.getItem("user");
   const user = JSON.parse(data);
@@ -240,7 +240,7 @@ export default function Home() {
                     width: "100%",
                     background: "rgba(255, 255, 255, 0.9)",
                     justifyContent: "center",
-                    marginTop: -5,
+                    marginTop: -8,
                   }}
                 >
                   <Box
@@ -254,7 +254,6 @@ export default function Home() {
                       border: "1px solid gray",
                       borderRadius: 30,
                       gap: 2,
-                      paddingX: 3,
                     }}
                   >
                     <InsertEmoticonRounded
@@ -274,7 +273,7 @@ export default function Home() {
                       name="message"
                       aria-multiline={true}
                       style={{
-                        padding: 10,
+                        padding: 5,
                         border: "none",
                         alignSelf: "center",
                         flex: 1,
@@ -283,24 +282,15 @@ export default function Home() {
                       onChange={(e) => setText(e.target.value)}
                       value={text}
                     />
-                    <form
-                      onSubmit={() => {
+
+                    <SendIcon
+                      onPress={() => {
                         sendMessage();
                         setText("");
                       }}
-                    >
-                      <IconButton
-                        type="submit"
-                        onSubmit={() => {
-                          sendMessage();
-                          setText("");
-                        }}
-                        style={{ cursor: "pointer", alignSelf: "center" }}
-                        sx={{ ":hover": { color: "green" } }}
-                      >
-                        <SendIcon />
-                      </IconButton>
-                    </form>
+                      style={{ cursor: "pointer", alignSelf: "center" }}
+                      sx={{ ":hover": { color: "green" } }}
+                    />
                   </Box>
                 </Box>
               )}
@@ -310,7 +300,7 @@ export default function Home() {
               className={`${isProfile ? "show col-md-4 mr-0" : "hide"}`}
             >
               {/* {isProfile && <UserProfile user={receiver} />} */}
-              <UserProfile user={receiver} />
+              <UserProfile user={receiver} setIsProfile={setIsProfile} />
             </motion.div>
           </div>
         </ThemeProvider>

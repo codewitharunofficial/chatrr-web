@@ -32,7 +32,6 @@ function Profile({setIsProfile}) {
      alert("You're Getting Logged Out");
      localStorage.removeItem("user");
      navigator("/login");
-     setIsProfile(false);
   };
 
   const handleFileChange = (e) => {
@@ -43,11 +42,14 @@ function Profile({setIsProfile}) {
     <div
       style={{
         width: "100%",
+        height: window.innerWidth < 768 ? "100vh" : 'auto',
         minHeight: "auto",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "column",
+        position: window.innerWidth < 768 ? "fixed" : "relative",
+        top: window.innerWidth < 768 ? 80 : 0,
         marginTop: 0,
       }}
     >
@@ -87,8 +89,8 @@ function Profile({setIsProfile}) {
         <label
           style={{
             position: "absolute",
-            top: window.innerWidth > 768 ? 185 : 140,
-            left: window.innerWidth > 768 ? "16%" : "55%",
+            top: window.innerWidth > 768 ? 145 : 120,
+            left: window.innerWidth > 768 ? "55%" : "55%",
           }}
           htmlFor="fileInput"
         >

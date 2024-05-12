@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
 
+
 const SOCKET_URL = `${process.env.REACT_APP_URL}`
 
 class WSService {
@@ -17,6 +18,7 @@ class WSService {
             this.socket.on('connect', (data) => {
                 // console.log("=== socket connected ====")
                 console.log("=== socket connected ====")
+                return true
             })
 
             this.socket.on('disconnect', (data) => {
@@ -28,7 +30,8 @@ class WSService {
             })
 
         } catch (error) {
-            console.log("scoket is not inialized", error)
+            console.log("socket is not inialized", error);
+            return false
         }
     }
 

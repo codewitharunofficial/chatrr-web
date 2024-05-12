@@ -6,7 +6,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { useCurrentChat } from "../../Contexts/CurrentChatContext";
 import socketServcies from "../../utils/SocketWebServices";
 import { useChat } from "../../Contexts/ShowChatMessages";
-import Profile from '../Profile';
+import UserProfile from '../UserProfile';
 import { useUser } from "../../Contexts/UserModelContext";
 
 const Coversations = ({ receiver, currentConvo, showChatMessages }) => {
@@ -47,7 +47,7 @@ const Coversations = ({ receiver, currentConvo, showChatMessages }) => {
     <div>
       {
         isProfile ? (
-          <Profile setIsProfile={setIsProfile} />
+          <UserProfile user={receiver} setIsProfile={setIsProfile} />
         ) : (
           <div className="d-gird col-md-12 col-sm-12">
         <Conversation
