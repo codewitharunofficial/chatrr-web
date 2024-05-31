@@ -75,9 +75,9 @@ const Coversations = ({ receiver, currentConvo, showChatMessages }) => {
             }}
           >
             <Box
-              className="w-sm-100 p-sm-2"
+              className="p-sm-1"
               sx={{
-                width: "90%",
+                width: window.innerWidth > 768 ? "90%" : "98%",
                 height: '25%',
                 display: "flex",
                 flexDirection: "row",
@@ -85,12 +85,12 @@ const Coversations = ({ receiver, currentConvo, showChatMessages }) => {
                 background: "rgba(255, 255, 255, 1)",
                 border: "1px solid gray",
                 borderRadius: 30,
-                gap: 2,
+                gap: window.innerWidth > 768 ? 2 : 0.5,
                 paddingX: 3,
               }}
             >
               <InsertEmoticonRounded
-                sx={{":focus": {color: 'lightblue'} }}
+                sx={{":hover": {color: 'white'} }}
                 onClick={() => setOpenEmojis(!openEmojis)}
                 className="emoji"
                 style={{ fontSize: 30, cursor: "pointer" }}

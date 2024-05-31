@@ -20,6 +20,7 @@ const HomeForMob = ({ focusHome }) => {
   const [focusChats, setFocusChats] = React.useState(false);
 
   const [chats, setChats] = React.useState([]);
+  const [searching, setSearching] = React.useState(false);
   const navigation = useNavigate();
   const data = localStorage.getItem("user");
   const user = JSON.parse(data);
@@ -81,27 +82,37 @@ const HomeForMob = ({ focusHome }) => {
               marginTop: 5,
             }}
           >
-            <span
-              className="focus-bg-success"
+           {
+            searching ? (<Search />) : (
+              <>
+               <button
+              className="btn btn-primary"
               style={{
                 width: "auto",
                 border: "1px solid gray",
                 borderRadius: 10,
                 padding: 10,
+                alignItems: "center",
+                justifyContent: 'center'
               }}
             >
-              Start New Conversation
-            </span>
-            <span
+              New Chat
+            </button>
+            <button onClick={setSearching(true)} className="btn btn-primary w-25"
               style={{
                 width: "auto",
                 border: "1px solid gray",
                 borderRadius: 10,
                 padding: 10,
+                alignItems: "center",
+                justifyContent: 'center'
               }}
             >
-              Search A Conversation
-            </span>
+              Search
+            </button>
+              </>
+            )
+           }
           </div>
           <hr />
           <div

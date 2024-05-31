@@ -10,17 +10,15 @@ import UserProfile from './Components/UserProfile';
 import HomeForMob from './Components/For Small Devices/HomeForMob';
 import Navbar from './Components/For Small Devices/Navbar';
 import { useCurrentChat } from './Contexts/CurrentChatContext';
-import { useTabs } from './Contexts/For Small Devices/Tabs';
 
 function App() {
 
   const [deviceWidth, setDeviceWidth] = React.useState(window.innerWidth);
-  const [currentChat, setCurrentChat] = useCurrentChat();
-  const [focusHomeTab, setFocusHomeTab] = useTabs();
+  const [currentChat] = useCurrentChat();
 
   React.useEffect(() => {
     setDeviceWidth(window.innerWidth)
-  }, [window.innerWidth]);
+  });
 
   return (
     <> 

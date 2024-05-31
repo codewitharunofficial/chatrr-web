@@ -1,22 +1,43 @@
+import moment from "moment";
 import React from "react";
 
-const Messages = ({message, key}) => {
+const Messages = ({ message, key, messageTime }) => {
   const data = localStorage.getItem("user");
   const user = JSON.parse(data);
   return (
-    <p
+    <div
       key={key}
       style={{
-        backgroundColor: user?._id === message?.sender ? "gray" : "lightskyblue",
-        alignSelf: user?._id === message?.sender ? "flex-end" : "flex-start",
-        maxWidth: "80%",
-        padding: 10,
+        width: "98%",
+        display: "flex",
+        flexDirection: user?._id === message?.sender ? "row-reverse" : "row",
+        padding: 3,
         borderRadius: 10,
-        color: "white"
+        margin: 3,
       }}
     >
-      {message?.message?.message}
-    </p>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: user?._id === message?.sender ? "flex-end" : "flex-start",
+          backgroundColor:
+          user?._id === message?.sender ? "gray" : "lightskyblue",
+          maxWidth: "80%",
+          padding: 10,
+          borderRadius: 10,
+        }}
+      >
+        <p
+          style={{
+            color: "white",
+          }}
+        >
+          {message?.message?.message}
+        </p>
+        <small style={{color: user?._id === message?.sender ? "lightgreen" : "gray", fontSize: 8, alignSelf: "end", marginTop: 2 }} >{moment(messageTime).format('hh:mm')}</small>
+      </div>
+    </div>
   );
 };
 

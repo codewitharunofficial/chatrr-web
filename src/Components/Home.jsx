@@ -142,22 +142,22 @@ export default function Home() {
                   sx={{
                     ":hover": { backgroundColor: "gray" },
                     alignSelf: "center",
-                  }}
-                  onClick={() => setIsStories(!isStories)}
-                  component="span"
-                >
-                  <WebStoriesOutlined />
-                </IconButton>
-                <IconButton
-                  sx={{
-                    ":hover": { backgroundColor: "gray" },
-                    alignSelf: "center",
                     ":focus": { backgroundColor: "gray" },
                   }}
                   onClick={() => setShowMyProfile(!showMyProfile)}
                   component="span"
                 >
-                  <AccountCircle />
+                  <img src={user?.photo?.secure_url} alt="Profile" width={30} height={30} style={{borderRadius: 50}} />
+                </IconButton>
+                <IconButton
+                  sx={{
+                    ":hover": { backgroundColor: "gray" },
+                    alignSelf: "center",
+                  }}
+                  onClick={() => setIsStories(!isStories)}
+                  component="span"
+                >
+                  <WebStoriesOutlined />
                 </IconButton>
               </div>
               {isStories ? (

@@ -42,7 +42,7 @@ function Profile({setIsProfile}) {
     <div
       style={{
         width: "100%",
-        height: window.innerWidth < 768 ? "100vh" : 'auto',
+        height: window.innerWidth < 768 ? "100vh" : '',
         minHeight: "auto",
         display: "flex",
         alignItems: "center",

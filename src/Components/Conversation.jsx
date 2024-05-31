@@ -52,7 +52,7 @@ const Conversation = ({currentChat, receiver, showChatMesssages, openEmojis, set
                       currentChat?.length > 0 ? (
                         currentChat?.map((message) =>
                           message?.type === "Text" ? (
-                            <Messages key={message?._id} message={message} />
+                            <Messages key={message?._id} message={message} messageTime={message?.createdAt} />
                           ) : (
                             <p
                             key={message?._id}

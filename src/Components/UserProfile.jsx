@@ -38,14 +38,12 @@ export default function UserProfile({ user, setIsProfile }) {
           component={"div"}
           sx={{
             height: 40,
-            backgroundColor: "slategrey",
             width: "100%",
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
             alignContent: "center",
             paddingInline: 2,
-            ":hover": { translateY: 1, backgroundColor: "purple" },
           }}
         >
           <IconButton
@@ -62,12 +60,6 @@ export default function UserProfile({ user, setIsProfile }) {
               sx={{ ":hover": { color: "" }, color: "white" }}
             />
           </IconButton>
-          <h6
-            style={{ flex: 0.8, verticalAlign: "center" }}
-            className="text-center text-white"
-          >
-            Profile
-          </h6>
         </Box>
         <div
           style={{
